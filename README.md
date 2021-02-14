@@ -62,7 +62,7 @@ docker build -t my.fdroid.server .
 | GUID                | 1000                | for GroupID; also see explanation on linuxserver.io| 
 | TZ                  | Europe/Berlin       | used timezone in the Container |
 | LANG                | de_DE.UTF-8         | language and coding in container |
-| CRON_TIMESPEC       | 35 2 * * *          | time specification for cronjob; specifies when repo is updated using `fdroid_update` (default: hourly between 4am and 10pm). A generator for cron time specification can be found for example here: https://crontab.guru/| 
+| CRON_TIMESPEC       | 35 2 * * *          | time specification for cronjob; specifies when repo is updated using `fdroid_update` (default: nightly at 2:35am). A generator for cron time specification can be found for example here: https://crontab.guru/| 
 | RUN_ON_STARTUP      | no                  | if 'yes', fdroid_update will be executed on container startup
 
 
