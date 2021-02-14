@@ -1,10 +1,10 @@
 my.fdroid.server
 ================
 
-my.fdroid.server is docker-container wich combines [gplaycli from matlink](https://github.com/matlink/gplaycli) with [fdroidserver from F-Droid](https://gitlab.com/fdroid/fdroidserver).
+my.fdroid.server is docker-container wich combines [gplaycli](https://github.com/matlink/gplaycli) from @matlink with [fdroidserver](https://gitlab.com/fdroid/fdroidserver) from F-Droid team.
 Regular updates are triggered via cron.
 
-The docker image is based on [nginx from linuxserver.io](https://docs.linuxserver.io/images/docker-nginx) and on [ci-images-base from F-Droid](https://gitlab.com/fdroid/ci-images-base) for getting android-sdk.
+The docker image is based on [nginx](https://docs.linuxserver.io/images/docker-nginx)  from linuxserver.io team and on [ci-images-base](https://gitlab.com/fdroid/ci-images-base) from F-Droid team for getting android-sdk.
 
 This repo is provided as is. Due to lack of time there might be no further development.
 
