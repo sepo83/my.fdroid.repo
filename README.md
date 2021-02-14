@@ -1,0 +1,77 @@
+my.fdroid.server
+================
+
+my.fdroid.server is docker-container wich combines [gplaycli from matlink](https://github.com/matlink/gplaycli) with [fdroidserver from F-Droid](https://gitlab.com/fdroid/fdroidserver).
+Regular updates are triggered via cron.
+
+The docker image is based on [nginx from linuxserver.io](https://docs.linuxserver.io/images/docker-nginx) and on [ci-images-base from F-Droid](https://gitlab.com/fdroid/ci-images-base) for getting android-sdk.
+
+This repo is provided as is. Due to lack of time there might be no further development.
+
+Usage
+-----
+
+**Installation**
+
+If an empty docker-volume is given, the container:
+* creates the standard webserver-config (`/config/www`,`/config/nginx`
+* initialises fdroid repository at `/config/fdroid` by using `fdroid init`
+* copies a standard gplaycli config file at `/config/fdroid/gplaycli.conf`
+
+After container has started you have to:
+* edit fdroid-repo conifg file `config.yml` (see example on [https://gitlab.com/fdroid/fdroidserver/-/blob/master/examples/config.yml])
+* edit gplaycli config file `gplaycli.conf` (remark: for me only plaintext resp. mail+password  login works)
+* download apks with `gplay_download`
+* update fdroid repo with `fdroid_update`
+
+**Scripts in container**
+
+`gplay_search <name>`
+Searches for apks with <name> at store.
+
+`gplay_download <app-id>`
+Downloads apk with <app-id> to `/config/fdroid/repo` and appedns version to apk-filename
+
+`fdroid_update`
+Downloads apk-updates based on the apks found in `/config/fdroid/repo` and  triggers the `fdroid update` and `fdroid deploy`.
+
+`fdroid_remove_apk <name>`
+Removes apks with <name> from `/config/fdroid/repo`. Wildcards might be used.
+
+`fdroid_purge_apk <name>`
+Same as `fdroid_remove_apk`, but also removes apks from `/config/fdroid/archive`
+
+
+Docker
+------
+
+**Build docker:**
+
+````
+git clone <tbd>
+cd my.fdroid.server
+docker build -t my.fdroid.server .
+````
+
+**Environment:**
+
+
+| Env                 | Default Value       | Function        |
+| -----------------   | --------------      | --------------- |
+| PUID                | 1000                | for UserID; also see explanation on linuxserver.io| 
+| GUID                | 1000                | for GroupID; also see explanation on linuxserver.io| 
+| TZ                  | Europe/Berlin       | used timezone in the Container |
+| LANG                | de_DE.UTF-8         | language and coding in container |
+| CRON_TIMESPEC       | 35 2 * * *          | time specification for cronjob; specifies when repo is updated using `fdroid_update` (default: hourly between 4am and 10pm). A generator for cron time specification can be found for example here: https://crontab.guru/| 
+| RUN_ON_STARTUP      | no                  | if 'yes', fdroid_update will be executed on container startup
+
+
+As on most linuxserver.io based images all configuration (path in container: `/config`) is stored in a docker-volume. 
+
+`/config/fdroid` contains fdroid-configuration as well as gplaycli configfile.
+
+`/config/nginx` contains webserver configuration.
+
+`/config/www` contains webserverroot. fdroid usually copies the repo files here.
+
+

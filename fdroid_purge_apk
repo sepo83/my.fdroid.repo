@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ -z "$1" ]
+then
+        return "APK name or regex is empty! Do nothing!"
+fi
+
+rm -Iv  $FDROID_DIR/repo/$1
+rm -Iv  $FDROID_DIR/archive/$1

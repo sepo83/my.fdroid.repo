@@ -1,0 +1,33 @@
+#!/bin/sh
+
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo ~~ GPLAYCLI: show config file
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cat $FDROID_DIR/gplaycli.conf
+echo
+echo
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo ~~ GPLAYCLI: Update APKs
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gplaycli                                                              \
+          --update $FDROID_DIR/repo                                   \
+          --config $FDROID_DIR/gplaycli.conf                          \
+          --append-version                                            \
+          --additional-files                                          \
+          --yes                                                       \
+          --progress
+echo
+echo
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo ~~ FDROID: Update Repo
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cd $FDROID_DIR
+fdroid update -c --use-date-from-apk
+fdroid update  --use-date-from-apk
+echo
+echo
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo ~~ FDROID: Sync repo to network
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fdroid deploy -v
+cd -

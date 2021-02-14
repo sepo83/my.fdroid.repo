@@ -1,0 +1,8 @@
+#!/bin/sh
+
+gplaycli                                                              \
+          --config $FDROID_DIR/gplaycli.conf                          \
+          --verbose                                                   \
+          --yes                                                       \
+          --progress                                                  \
+          --search $1

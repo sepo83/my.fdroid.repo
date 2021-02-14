@@ -1,0 +1,16 @@
+FROM ghcr.io/linuxserver/nginx
+
+RUN apk update && apk add  \
+	py3-pip \
+	git clone https://gitlab.com/fdroid/fdroidserver.git
+export PATH="$PATH:$PWD/fdroidserver"
+pip3 install -e fdroidserver
+#	patch \
+#	autoconf libtool pkg-config \
+#	gradle ant 
+#	&& apt autoclean \
+#	&& apt autoremeove --yes
+
+RUN git clone --depth 1 https://gitlab.com/fdroid/fdroidserver.git \
+     && export PATH="$PATH:$PWD/fdroidserver" \
+     && pip3 install -e fdroidserver 
