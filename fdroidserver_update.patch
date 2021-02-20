@@ -1,0 +1,12 @@
+--- update.py
++++ update.py_new
+@@ -1600,6 +1600,9 @@
+ 
+     cachechanged = False
+     usecache = False
++
++    logging.info(_("Processing {repodir} -- {apkfilename}").format(apkfilename=apkfilename,repodir=repodir))
++
+     if apkfilename in apkcache:
+         apk = apkcache[apkfilename]
+         if apk.get('hash') == sha256sum(apkfile):

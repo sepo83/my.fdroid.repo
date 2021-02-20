@@ -55,6 +55,10 @@ RUN patch -u -b /usr/lib/python3.8/site-packages/gpapi/googleplay.py  -i gpapi.p
 ADD gplaycli.patch /
 RUN patch -u -b /gplaycli/gplaycli/gplaycli.py  -i gplaycli.patch
 
+#workaround: fdroidserver/update.py log which file is processed to INFO
+ADD fdroidserver_update.patch /
+RUN patch -u -b /fdroidserver/fdroidserver/update.py  -i fdroidserver_update.patch
+
 WORKDIR $FDROID_DIR
 ADD fdroid_update /usr/bin/fdroid_update
 ADD fdroid_remove_apk /usr/bin/
