@@ -1,0 +1,14 @@
+--- update.py_old
++++ update.py
+@@ -1999,11 +1999,6 @@
+                 apks.remove(apk)
+                 archapks.append(apk)
+                 move_apk_between_sections(repodir, archivedir, apk)
+-            elif apk in archapks and apk in keep:
+-                archapks.remove(apk)
+-                apks.append(apk)
+-                move_apk_between_sections(archivedir, repodir, apk)
+-
+ 
+ def move_apk_between_sections(from_dir, to_dir, apk):
+     """move an APK from repo to archive or vice versa"""

@@ -59,6 +59,10 @@ RUN patch -u -b /gplaycli/gplaycli/gplaycli.py  -i gplaycli.patch
 ADD fdroidserver_update.patch /
 RUN patch -u -b /fdroidserver/fdroidserver/update.py  -i fdroidserver_update.patch
 
+#workaround: fdroidserver/update.py dont synch archive back to repo
+ADD fdroidserver_update2.patch /
+RUN patch -u -b /fdroidserver/fdroidserver/update.py  -i fdroidserver_update2.patch
+
 WORKDIR $FDROID_DIR
 ADD fdroid_update /usr/bin/fdroid_update
 ADD fdroid_remove_apk /usr/bin/
