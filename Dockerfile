@@ -1,5 +1,13 @@
 FROM registry.gitlab.com/fdroid/ci-images-base as fdroid-ci-image
 
+RUN  touch /root/.android/repositories.cfg \
+	&& echo y | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "platforms;android-29" \
+        && echo y | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;29.0.3" \
+        && echo y | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "platforms;android-30" \
+        && echo y | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;30.0.3" \
+        && echo y | $ANDROID_HOME/tools/bin/sdkmanager --update
+
+
 FROM ghcr.io/linuxserver/nginx
 
 ENV TZ="Europe/Berlin"
@@ -24,12 +32,6 @@ COPY --from=fdroid-ci-image /opt/android-sdk ${ANDROID_HOME}
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:/fdroidserver:/gplaycli:/usr/lib/jvm/java-10-openjdk/bin
 
 ENV JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'
-
-RUN mkdir /root/.android \
-	&& touch /root/.android/repositories.cfg \
-	&& echo y | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "platforms;android-30" \
-	&& echo y | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;30.0.3" \
-	&& echo y | $ANDROID_HOME/tools/bin/sdkmanager --update
 
 #install fdroidserver
 RUN git clone --depth 1 https://gitlab.com/fdroid/fdroidserver.git \
@@ -59,5 +61,6 @@ ADD fdroid_remove_apk /usr/bin/
 ADD fdroid_purge_apk /usr/bin/
 ADD gplay_search /usr/bin/gplay_search
 ADD gplay_download /usr/bin/gplay_download
+ADD example_apk_list.txt /
 #add a script that configures and starts cronjob
 ADD 95_myfdroidserver /etc/cont-init.d/

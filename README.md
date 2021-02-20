@@ -17,12 +17,17 @@ If an empty docker-volume is given, the container:
 * creates the standard webserver-config (`/config/www`,`/config/nginx`
 * initialises fdroid repository at `/config/fdroid` by using `fdroid init`
 * copies a standard gplaycli config file at `/config/fdroid/gplaycli.conf`
+* copies a examplaric apk list (for downloading firefox) to `/config/fdroid/apk_list.txt`
 
 After container has started you have to:
 * edit fdroid-repo conifg file `config.yml` (see example on [https://gitlab.com/fdroid/fdroidserver/-/blob/master/examples/config.yml])
 * edit gplaycli config file `gplaycli.conf` (remark: for me only plaintext resp. mail+password  login works)
-* download apks with `gplay_download`
+* fill `apk_list.txt` with apks
 * update fdroid repo with `fdroid_update`
+
+**apk-list.txt**
+`/config/fdroid/apk_list.txt` contains a list of apks to be handled by gplaycli. Each line shall contain a single apk-id. Each line containing `#` will be ignored (poor mans commenting function).
+If an apk is contained in `apk_list.txt` then it will be downloaded resp. updated. All other apk-files found in `/config/fdroid/repo` will be deleted localy and from local FDroid-Server.
 
 **Scripts in container**
 
@@ -30,13 +35,13 @@ After container has started you have to:
 Searches for apks with <name> at store.
 
 `gplay_download <app-id>`
-Downloads apk with <app-id> to `/config/fdroid/repo` and appedns version to apk-filename
+Downloads apk with <app-id> to `/config/fdroid/repo` and appedns version to apk-filename. Remark: Unless apk is not added to `apk_list.txt`, it will be deleted with next `fdroid_update`.
 
 `fdroid_update`
 Downloads apk-updates based on the apks found in `/config/fdroid/repo` and  triggers the `fdroid update` and `fdroid deploy`.
 
 `fdroid_remove_apk <name>`
-Removes apks with <name> from `/config/fdroid/repo`. Wildcards might be used.
+Removes apks with <name> from `/config/fdroid/repo`. Wildcards might be used. Remark: Unless apk is not removed from `apk_list.txt`, it will be readded with next `fdroid_update`.
 
 `fdroid_purge_apk <name>`
 Same as `fdroid_remove_apk`, but also removes apks from `/config/fdroid/archive`

@@ -10,6 +10,9 @@ then
 
         echo "[my.fdroid.repo]  ... generate gplaycli.conf"
         cp /gplaycli/gplaycli.conf $FDROID_DIR
+
+        echo "[my.fdroid.repo]  ... generate apk_list.txt"
+        cp /example_apk_list.txt $FDROID_DIR/apk_list.txt
 else
         echo "[my.fdroid.repo]  $FDROID_DIR is not empty. Skip init fdroid repo."
 fi

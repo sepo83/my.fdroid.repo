@@ -10,12 +10,21 @@ echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 echo ~~ GPLAYCLI: Update APKs
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 gplaycli                                                              \
-          --update $FDROID_DIR/repo                                   \
+          --folder $FDROID_DIR/repo                                   \
           --config $FDROID_DIR/gplaycli.conf                          \
+          --file $FDROID_DIR/apk_list.txt                             \
           --append-version                                            \
           --additional-files                                          \
           --yes                                                       \
+          --verbose                                                   \
           --progress
+echo
+echo
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo ~~ GPLAYCLI: Cleanup apks not in apk_list.txt
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+find $FDROID_DIR/repo -type f -name '*.apk' $(awk -F\# '$1!=""{printf(" -not -name %s*",$0)}' ORS=' ' $FDROID_DIR/apk_list.txt)
+find $FDROID_DIR/repo -type f -name '*.apk' $(awk -F\# '$1!=""{printf(" -not -name %s*",$0)}' ORS=' ' $FDROID_DIR/apk_list.txt) -delete
 echo
 echo
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,7 +32,6 @@ echo ~~ FDROID: Update Repo
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 cd $FDROID_DIR
 fdroid update -c --use-date-from-apk
-fdroid update  --use-date-from-apk
 echo
 echo
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
