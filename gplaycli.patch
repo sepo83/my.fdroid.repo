@@ -1,6 +1,6 @@
 --- gplaycli.py_old
 +++ gplaycli.py
-@@ -252,11 +252,10 @@
+@@ -252,11 +252,15 @@
  		for position, (detail, item) in enumerate(zip(details, pkg_todownload)):
  			packagename, filename = item
  
@@ -10,15 +10,13 @@
 -				else:
 -					filename = "%s.apk" % detail['docid']
 +			if self.append_version:
-+    try:
-+     filename = "%s-v.%s.apk" % (detail['docid'], detail['details']['appDetails']['versionString'])
-+    except Exception as exc:
-+     logger.error("Error while downloading %s : %s -- versionString not provided by google.play", packagename, exc)
-+     failed_downloads.append((item, exc))
-+     continue
-+				filename = "%s-v.%s.apk" % (detail['docid'], detail['details']['appDetails']['versionString'])
++				try:
++					filename = "%s-v.%s.apk" % (detail['docid'], detail['details']['appDetails']['versionString'])
++				except Exception as exc:
++					logger.error("Error while downloading %s : %s -- versionString not provided by google.play", packagename, exc)
++					failed_downloads.append((item, exc))
++					continue
 +			else:
 +				filename = "%s.apk" % detail['docid']
  
  			logger.info("%s / %s %s", 1+position, len(pkg_todownload), packagename)
- 
