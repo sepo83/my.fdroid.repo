@@ -10,6 +10,12 @@
 -				else:
 -					filename = "%s.apk" % detail['docid']
 +			if self.append_version:
++    try:
++     filename = "%s-v.%s.apk" % (detail['docid'], detail['details']['appDetails']['versionString'])
++    except Exception as exc:
++     logger.error("Error while downloading %s : %s -- versionString not provided by google.play", packagename, exc)
++     failed_downloads.append((item, exc))
++     continue
 +				filename = "%s-v.%s.apk" % (detail['docid'], detail['details']['appDetails']['versionString'])
 +			else:
 +				filename = "%s.apk" % detail['docid']
