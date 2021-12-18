@@ -23,7 +23,8 @@ RUN apk update && apk add  \
         libxml2-dev libxslt-dev py3-matplotlib py3-cryptography py3-bcrypt py3-pynacl py3-yaml py3-lxml \
         rsync \
         openjdk10-jdk \
-        patch
+        patch && \
+    rm -rf /var/cache/apk/*
 
 #get android sdk
 ENV ANDROID_HOME="/opt/android-sdk-linux"
