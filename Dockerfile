@@ -48,8 +48,9 @@ RUN pip3 install --upgrade urllib3==1.24.2
 
 #workaround for "Unexpected end-group tag" error
 #Remark: patch-example: diff -u gplaycli.py_old gplaycli.py > gplaycli.patch
+#Remark: the $(python3...) cmd gives the path to /usr/lib/pythonX.X/site-packages
 ADD gpapi.patch /
-RUN patch -u -b /usr/lib/python3.8/site-packages/gpapi/googleplay.py  -i gpapi.patch
+RUN patch -u -b $(python3 -c "import site;print([p for p in site.getsitepackages() if 'site-package' in p][0])")/gpapi/googleplay.py  -i gpapi.patch
 
 #workaround for bug: not updating apks, when version tag is appended to apk filename
 ADD gplaycli.patch /
