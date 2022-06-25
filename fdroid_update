@@ -6,31 +6,30 @@ echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 echo "Store:    $APKEEP_STORE"
 echo "Username: $APKEEP_USERNAME"
 echo
-echo
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 echo ~~ APKEEP: Download and rename apks
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 mkdir $FDROID_DIR/.apk_tmp
 
 if [ $APKEEP_STORE == "google-play" ]; then
-  if [ -z $APKEEP_USERNAME ] || [ -z $APK_PASSWORD ]; then
-    echo "ERROR: 'google-play' was selected as APKEEP_STORE, thus APKEEP_USERNAME (=$APKEEP_USERNAME) or APK_PASSWORD (=$APK_PASSWORD) shall not be empty! Aborting..."
+  if [ -z $APKEEP_USERNAME ] || [ -z $APKEEP_PASSWORD ]; then
+    echo "ERROR: 'google-play' was selected as APKEEP_STORE, thus APKEEP_USERNAME (=$APKEEP_USERNAME) or APKEEP_PASSWORD (=$APKEEP_PASSWORD) shall not be empty! Aborting..."
   fi
-  apkeep_storestr="-d $APKEEP_STORE -u '$APKEEP_USERNAME' -p $APK_PASSWORD"
+  apkeep_storestr="-d $APKEEP_STORE -u '$APKEEP_USERNAME' -p $APKEEP_PASSWORD"
 
 else
   apkeep_storestr="-d $APKEEP_STORE"
 fi
 
-apkeep --csv $FDROID_DIR/apk_shortlist.txt $FDROID_DIR/.apk_tmp $apkeep_storestr
+apkeep --csv $FDROID_DIR/apk_list.txt $FDROID_DIR/.apk_tmp $apkeep_storestr
 
 for apk_file in "$FDROID_DIR"/.apk_tmp/* 
 do
   if [ -f "$apk_file" ];then
     apk_file_name="$(basename $apk_file)"
     echo "Processing '$apk_file_name'"
-    if [ ${apk_file_name##*.} != 'apk' ]; then 
-      echo "...not an *.apk file. Skipping!"
+    if [ ${apk_file_name##*.} != 'apk' ] || [ ${apk_file_name##*.} != 'xapk' ; then 
+      echo "...not an *.apk or *.xapk file. Skipping!"
       continue
     fi
 
@@ -47,7 +46,7 @@ do
   fi
 done
 
-#rm -r $FDROID_DIR/.apk_tmp
+rm -r $FDROID_DIR/.apk_tmp
 
 echo
 echo

@@ -7,18 +7,20 @@ ENV FDROID_DIR="/config/fdroid"
 ENV CRON_TIMESPEC="35 2 * * *"
 ENV RUN_ON_STARTUP="No"
 
-ENV APKEEP_STORE=apk-pure
-ENV APKEEP_USERNAME=
-ENV APK_PASSWORD=
+ENV APKEEP_STORE="apk-pure"
+ENV APKEEP_USERNAME=""
+ENV APKEEP_PASSWORD=""
 
+RUN echo "Building..."
 
 RUN apt update && \
     apt upgrade -y && \
     apt install -y \	
-	gcc pkg-config libssl-dev\
+	nano \
+	gcc pkg-config libssl-dev \
 	openjdk-11-jdk apksigner fastjar jarwrapper androguard \
 	python3-pip rsync git aapt && \
-    apt autoclean && apt autoremove -y	
+    apt autoclean && apt autoremove -y && apt clean	
 	
 
 #install apkeep
@@ -51,6 +53,5 @@ ADD fdroid_purge_apk /usr/bin/
 ADD example_apk_list.txt /
 #add a script that configures and starts cronjob
 ADD 95_myfdroidserver /etc/cont-init.d/
-
 
 VOLUME /config
