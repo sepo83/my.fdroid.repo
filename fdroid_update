@@ -1,23 +1,54 @@
 #!/bin/sh
 
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo ~~ GPLAYCLI: show config file
+echo ~~ show configuratione
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cat $FDROID_DIR/gplaycli.conf
+echo "Store:    $APKEEP_STORE"
+echo "Username: $APKEEP_USERNAME"
 echo
 echo
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo ~~ GPLAYCLI: Update APKs
+echo ~~ APKEEP: Download and rename apks
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-gplaycli                                                              \
-          --folder $FDROID_DIR/repo                                   \
-          --config $FDROID_DIR/gplaycli.conf                          \
-          --file $FDROID_DIR/apk_list.txt                             \
-          --append-version                                            \
-          --additional-files                                          \
-          --yes                                                       \
-          --verbose                                                   \
-          --progress
+mkdir $FDROID_DIR/.apk_tmp
+
+if [ $APKEEP_STORE == "google-play" ]; then
+  if [ -z $APKEEP_USERNAME ] || [ -z $APK_PASSWORD ]; then
+    echo "ERROR: 'google-play' was selected as APKEEP_STORE, thus APKEEP_USERNAME (=$APKEEP_USERNAME) or APK_PASSWORD (=$APK_PASSWORD) shall not be empty! Aborting..."
+  fi
+  apkeep_storestr="-d $APKEEP_STORE -u '$APKEEP_USERNAME' -p $APK_PASSWORD"
+
+else
+  apkeep_storestr="-d $APKEEP_STORE"
+fi
+
+apkeep --csv $FDROID_DIR/apk_shortlist.txt $FDROID_DIR/.apk_tmp $apkeep_storestr
+
+for apk_file in "$FDROID_DIR"/.apk_tmp/* 
+do
+  if [ -f "$apk_file" ];then
+    apk_file_name="$(basename $apk_file)"
+    echo "Processing '$apk_file_name'"
+    if [ ${apk_file_name##*.} != 'apk' ]; then 
+      echo "...not an *.apk file. Skipping!"
+      continue
+    fi
+
+    versionname="$(aapt dump badging "$apk_file" | grep "versionName" | sed -e "s/.*versionName='//" -e "s/' .*//")"
+    filename="$apk_file_name-v$versionname.apk"
+    echo "...renaming to $filename"
+
+    if [ -f "$FDROID_DIR/repo/$filename" ]; then
+      echo "...already exists in repo. Skipping!"
+    else
+      echo "...copy to repo"
+      mv $apk_file $FDROID_DIR/repo/$filename
+    fi
+  fi
+done
+
+#rm -r $FDROID_DIR/.apk_tmp
+
 echo
 echo
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
