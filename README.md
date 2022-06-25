@@ -68,3 +68,7 @@ As on most linuxserver.io based images all configuration (path in container: `/c
 
 `/config/fdroid` contains fdroid-configuration as well as gplaycli configfile.
 
+Troubleshooting
+------
+
+* if fdroid update fails, try to delete the metadata and tmp folder (resp. some bofus files there)

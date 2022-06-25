@@ -11,7 +11,7 @@ echo ~~ APKEEP: Download and rename apks
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 mkdir $FDROID_DIR/.apk_tmp
 
-if [ $APKEEP_STORE == "google-play" ]; then
+if [ "$APKEEP_STORE" = "google-play" ]; then
   if [ -z $APKEEP_USERNAME ] || [ -z $APKEEP_PASSWORD ]; then
     echo "ERROR: 'google-play' was selected as APKEEP_STORE, thus APKEEP_USERNAME (=$APKEEP_USERNAME) or APKEEP_PASSWORD (=$APKEEP_PASSWORD) shall not be empty! Aborting..."
   fi
@@ -23,18 +23,39 @@ fi
 
 apkeep --csv $FDROID_DIR/apk_list.txt $FDROID_DIR/.apk_tmp $apkeep_storestr
 
-for apk_file in "$FDROID_DIR"/.apk_tmp/* 
+echo
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo ~~ APK: Convert xapk to apk, if feasble
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo
+for apk_file in "$FDROID_DIR"/.apk_tmp/*.xapk 
 do
   if [ -f "$apk_file" ];then
     apk_file_name="$(basename $apk_file)"
-    echo "Processing '$apk_file_name'"
-    if [ ${apk_file_name##*.} != 'apk' ] || [ ${apk_file_name##*.} != 'xapk' ; then 
-      echo "...not an *.apk or *.xapk file. Skipping!"
+    echo "Processing '$apk_file_name'..."
+    unzip -o -j $apk_file "${apk_file_name%.*}.apk" -d $FDROID_DIR/.apk_tmp
+    rm $apk_file
+  fi
+done
+
+echo
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo ~~ APK: rename apks and copy to fdroid repo
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo
+for apk_file in "$FDROID_DIR"/.apk_tmp/*.apk 
+do
+  if [ -f "$apk_file" ];then
+    apk_file_name="$(basename $apk_file)"
+    echo "Processing '$apk_file_name'..."
+
+    if [ ${apk_file_name##*.} != 'apk' ]; then 
+      echo "...not an *.apk file. Skipping!"
       continue
     fi
 
     versionname="$(aapt dump badging "$apk_file" | grep "versionName" | sed -e "s/.*versionName='//" -e "s/' .*//")"
-    filename="$apk_file_name-v$versionname.apk"
+    filename="${apk_file_name%.*}-v$versionname.apk"
     echo "...renaming to $filename"
 
     if [ -f "$FDROID_DIR/repo/$filename" ]; then

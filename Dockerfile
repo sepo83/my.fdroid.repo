@@ -1,7 +1,7 @@
 FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
 
-ENV TZ="Europe/Berlin"
-ENV LANG="de_DE.UTF-8"
+#ENV TZ="Europe/Berlin"
+#ENV LANG="de_DE.UTF-8"
 
 ENV FDROID_DIR="/config/fdroid"
 ENV CRON_TIMESPEC="35 2 * * *"
@@ -19,15 +19,14 @@ RUN apt update && \
 	nano \
 	gcc pkg-config libssl-dev \
 	openjdk-11-jdk apksigner fastjar jarwrapper androguard \
-	python3-pip rsync git aapt && \
+	python3-pip rsync git aapt unzip && \
     apt autoclean && apt autoremove -y && apt clean	
 	
 
 #install apkeep
 ENV PATH ${PATH}:/root/.cargo/bin
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
-RUN cargo install \
-       --git https://github.com/EFForg/apkeep.git 
+RUN cargo install --git https://github.com/EFForg/apkeep.git 
 
 ENV PATH ${PATH}:/fdroidserver:/gplaycli:/usr/lib/jvm/java-10-openjdk/bin
 
