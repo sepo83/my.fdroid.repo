@@ -25,18 +25,18 @@ apkeep --csv $FDROID_DIR/apk_list.txt $FDROID_DIR/.apk_tmp $apkeep_storestr
 
 echo
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo ~~ APK: Convert xapk to apk, if feasble
+echo ~~ APK: Convert xapk to apk, if feasble (currently disabled)
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 echo
-for apk_file in "$FDROID_DIR"/.apk_tmp/*.xapk 
-do
-  if [ -f "$apk_file" ];then
-    apk_file_name="$(basename $apk_file)"
-    echo "Processing '$apk_file_name'..."
-    unzip -o -j $apk_file "${apk_file_name%.*}.apk" -d $FDROID_DIR/.apk_tmp
-    rm $apk_file
-  fi
-done
+#for apk_file in "$FDROID_DIR"/.apk_tmp/*.xapk 
+#do
+#  if [ -f "$apk_file" ];then
+#    apk_file_name="$(basename $apk_file)"
+#    echo "Processing '$apk_file_name'..."
+#    unzip -o -j $apk_file "${apk_file_name%.*}.apk" -d $FDROID_DIR/.apk_tmp
+#    rm $apk_file
+#  fi
+#done
 
 echo
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
