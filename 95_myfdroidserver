@@ -51,5 +51,5 @@ else
 	echo "[my.fdroid.repo] Do not run on startup"
 fi
 
-#echo "[my.fdroid.repo]] Start cron"
-#/usr/sbin/cron -f -L 1 &
+echo "[my.fdroid.repo]] Start cron"
+/usr/sbin/cron -f -L 1 &

@@ -16,7 +16,7 @@ RUN echo "Building..."
 RUN apt update && \
     apt upgrade -y && \
     apt install -y \	
-	nano \
+	nano cron \
 	gcc pkg-config libssl-dev \
 	openjdk-11-jdk apksigner fastjar jarwrapper androguard \
 	python3-pip rsync git aapt unzip && \
