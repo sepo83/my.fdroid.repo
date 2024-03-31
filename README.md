@@ -8,6 +8,10 @@ The docker image is based on [nginx](https://docs.linuxserver.io/images/docker-n
 
 This repo is provided as is. Due to lack of time there might be no further development.
 
+Remark
+------
+gplay stopped working for me a while ago. As alternative [apkeep](https://github.com/EFForg/apkeep) was integrated (see branch "apkeep").
+
 Usage
 -----
 
