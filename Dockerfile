@@ -19,9 +19,9 @@ RUN apt update && \
     apt upgrade -y && \
     apt install -y \	
 	nano cron \
-	build-essential \ 
-	pkg-config libssl-dev \
-#	aapt openjdk-11-jdk apksigner fastjar jarwrapper \
+	build-essential pkg-config libssl-dev \
+	aapt apksigner \
+# 	openjdk-11-jdk  fastjar jarwrapper \
 	python3-pip rsync git unzip && \
     apt autoclean && apt autoremove -y && apt clean 
 #    pip3 --break-system-packages install androguard
