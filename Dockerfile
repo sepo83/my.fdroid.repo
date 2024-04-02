@@ -13,14 +13,17 @@ ENV APKEEP_PASSWORD=""
 
 RUN echo "Building..."
 
+# install dependencies
+# Remark: adroguard is installed by pip for now in order to get the most recent version that prevents a critical bug
 RUN apt update && \
     apt upgrade -y && \
     apt install -y \	
 	nano cron \
 	gcc pkg-config libssl-dev \
-	openjdk-11-jdk apksigner fastjar jarwrapper androguard \
+	openjdk-11-jdk apksigner fastjar jarwrapper \
 	python3-pip rsync git aapt unzip && \
-    apt autoclean && apt autoremove -y && apt clean	
+    apt autoclean && apt autoremove -y && apt clean && \
+    pip3 install androguard
 	
 
 #install apkeep
