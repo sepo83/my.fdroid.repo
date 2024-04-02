@@ -14,27 +14,21 @@ ENV APKEEP_PASSWORD=""
 RUN echo "Building..."
 
 # install dependencies
-# Remark: adroguard is installed by pip for now in order to get the most recent version that prevents a critical bug
 RUN apt update && \
     apt upgrade -y && \
     apt install -y \	
 	nano cron \
-	build-essential pkg-config libssl-dev \
-	aapt apksigner \
-# 	openjdk-11-jdk  fastjar jarwrapper \
+	build-essential pkg-config libssl-dev \ 
+	aapt apksigner  \
 	python3-pip rsync git unzip && \
     apt autoclean && apt autoremove -y && apt clean 
-#    pip3 --break-system-packages install androguard
 	
-
 #install apkeep
 ENV PATH ${PATH}:/root/.cargo/bin
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
 RUN cargo install --git https://github.com/EFForg/apkeep.git 
 
 ENV PATH ${PATH}:/fdroidserver
-
-#ENV JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'
 
 #install fdroidserver
 RUN git clone --depth 1 https://gitlab.com/fdroid/fdroidserver.git \
