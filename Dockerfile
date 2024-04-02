@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
+FROM ghcr.io/linuxserver/baseimage-ubuntu:noble
 
 #ENV TZ="Europe/Berlin"
 #ENV LANG="de_DE.UTF-8"
@@ -19,9 +19,9 @@ RUN apt update && \
     apt upgrade -y && \
     apt install -y \	
 	nano cron \
-	gcc pkg-config libssl-dev \
-	openjdk-11-jdk apksigner fastjar jarwrapper \
-	python3-pip rsync git aapt unzip && \
+#	gcc pkg-config libssl-dev \
+#	aapt openjdk-11-jdk apksigner fastjar jarwrapper \
+	python3-pip rsync git unzip && \
     apt autoclean && apt autoremove -y && apt clean && \
     pip3 install androguard
 	
@@ -31,9 +31,9 @@ ENV PATH ${PATH}:/root/.cargo/bin
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
 RUN cargo install --git https://github.com/EFForg/apkeep.git 
 
-ENV PATH ${PATH}:/fdroidserver:/gplaycli:/usr/lib/jvm/java-10-openjdk/bin
+ENV PATH ${PATH}:/fdroidserver
 
-ENV JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'
+#ENV JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'
 
 #install fdroidserver
 RUN git clone --depth 1 https://gitlab.com/fdroid/fdroidserver.git \
