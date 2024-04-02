@@ -22,7 +22,7 @@ RUN apt update && \
 #	gcc pkg-config libssl-dev \
 #	aapt openjdk-11-jdk apksigner fastjar jarwrapper \
 	python3-pip rsync git unzip && \
-    apt autoclean && apt autoremove -y && apt clean && \
+    apt autoclean && apt autoremove -y && apt clean 
 #    pip3 --break-system-packages install androguard
 	
 
