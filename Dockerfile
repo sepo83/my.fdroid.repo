@@ -20,7 +20,7 @@ RUN apt update && \
     apt install -y \	
 	nano cron \
 	build-essential \ 
-#	pkg-config libssl-dev \
+	pkg-config libssl-dev \
 #	aapt openjdk-11-jdk apksigner fastjar jarwrapper \
 	python3-pip rsync git unzip && \
     apt autoclean && apt autoremove -y && apt clean 
