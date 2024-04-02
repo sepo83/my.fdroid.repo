@@ -19,7 +19,7 @@ RUN apt update && \
     apt upgrade -y && \
     apt install -y \	
 	nano cron \
-	gcc \ 
+	build-essential \ 
 #	pkg-config libssl-dev \
 #	aapt openjdk-11-jdk apksigner fastjar jarwrapper \
 	python3-pip rsync git unzip && \
