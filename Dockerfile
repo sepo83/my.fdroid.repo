@@ -15,7 +15,7 @@ RUN echo "Building..."
 
 # install dependencies
 RUN apt update && \
-    apt upgrade -y && \
+#    apt upgrade -y && \
     apt install -y \	
 	nano cron \
 	build-essential pkg-config libssl-dev \ 
