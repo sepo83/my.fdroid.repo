@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
+FROM ghcr.io/linuxserver/baseimage-debian
 
 #ENV TZ="Europe/Berlin"
 #ENV LANG="de_DE.UTF-8"
