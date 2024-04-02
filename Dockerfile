@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-debian
+FROM ghcr.io/linuxserver/baseimage-debian:bookworm
 
 #ENV TZ="Europe/Berlin"
 #ENV LANG="de_DE.UTF-8"
