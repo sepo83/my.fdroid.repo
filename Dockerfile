@@ -18,8 +18,8 @@ RUN  apt update && \
 #    apt upgrade -y && \
     apt install -y \	
 	nano cron \
-	cargo \
-	#build-essential pkg-config libssl-dev \ 
+	cargo pkg-config \
+	#build-essential  libssl-dev \ 
 #	fdroidserver \
 #	openjdk-17-jre aapt apksigner  \
 	python3-pip rsync git unzip software-properties-common && \
