@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-debian:bookworm
+FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
 
 #ENV TZ="Europe/Berlin"
 #ENV LANG="de_DE.UTF-8"
@@ -14,34 +14,40 @@ ENV APKEEP_PASSWORD=""
 RUN echo "Building..."
 
 # install dependencies
-RUN apt update && \
+RUN  apt update && \
 #    apt upgrade -y && \
     apt install -y \	
 	nano cron \
 	build-essential pkg-config libssl-dev \ 
-	openjdk-17-jre aapt apksigner  \
-	python3-pip rsync git unzip && \
+#	fdroidserver \
+#	openjdk-17-jre aapt apksigner  \
+	python3-pip rsync git unzip software-properties-common && \
     apt autoclean && apt autoremove -y && apt clean 
+
+#install fdroid from ppa
+RUN add-apt-repository ppa:fdroid/fdroidserver && \
+    apt update && \
+    apt install -y fdroidserver  
 	
 #install apkeep
 ENV PATH ${PATH}:/root/.cargo/bin
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
 RUN cargo install --git https://github.com/EFForg/apkeep.git 
 
-ENV PATH ${PATH}:/fdroidserver
+#ENV PATH ${PATH}:/fdroidserver
 
 #install fdroidserver
-RUN git clone --depth 1 https://gitlab.com/fdroid/fdroidserver.git \
-     && export PATH="$PATH:$PWD/fdroidserver" \
-     && pip3 install -e fdroidserver
+#RUN git clone --depth 1 https://gitlab.com/fdroid/fdroidserver.git \
+#     && export PATH="$PATH:$PWD/fdroidserver" \
+#     && pip3 install -e fdroidserver
 
 #workaround: fdroidserver/update.py log which file is processed to INFO
 ADD fdroidserver_update.patch /
-RUN patch -u -b /fdroidserver/fdroidserver/update.py  -i fdroidserver_update.patch
+#RUN patch -u -b /fdroidserver/fdroidserver/update.py  -i fdroidserver_update.patch
 
 #workaround: fdroidserver/update.py dont synch archive back to repo
 ADD fdroidserver_update2.patch /
-RUN patch -u -b /fdroidserver/fdroidserver/update.py  -i fdroidserver_update2.patch
+#RUN patch -u -b /fdroidserver/fdroidserver/update.py  -i fdroidserver_update2.patch
 
 WORKDIR $FDROID_DIR
 ADD fdroid_update /usr/bin/fdroid_update
