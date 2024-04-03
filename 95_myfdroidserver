@@ -14,7 +14,7 @@ else
         echo "[my.fdroid.repo]  $FDROID_DIR is not empty. Skip init fdroid repo."
 fi
 
-#install Cron
+#install crontab
 echo "[my.fdroid.repo] Export environment for use in crontab"
 declare -p | grep -Ev 'BASHOPTS|BASH_VERSINFO|EUID|PPID|SHELLOPTS|UID' > /container.env
 
@@ -25,7 +25,7 @@ echo "SHELL=/bin/bash
 BASH_ENV=/container.env
 $CRONTAB > /tmp/stdout 2> /tmp/stderr
 # This extra line makes it a valid cron
-" > /etc/myfdroidserver.cron
+" > /etc/crontabs/root
 
 echo "[my.fdroid.repo] Create custom stdout and stderr named pipes"
 if [ ! -p /tmp/stdout ]; then 
@@ -52,4 +52,4 @@ else
 fi
 
 echo "[my.fdroid.repo]] Start cron"
-/usr/sbin/crond -f -S -l 0 -c /etc/crontabs &
+#/usr/sbin/crond -f -S -l 0 -c /etc/crontabs &
