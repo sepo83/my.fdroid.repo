@@ -14,8 +14,9 @@ else
         echo "[my.fdroid.repo]  $FDROID_DIR is not empty. Skip init fdroid repo."
 fi
 
-#install crontab
-echo "[my.fdroid.repo] Export environment for use in crontab"
+#install crontab to /etc/crontabs/root --> base-image will automatically load it
+echo "[my.fdroid.repo] Installing crontab to /etc/crontabs/root"
+mkdir -p /etc/crontabs
 declare -p | grep -Ev 'BASHOPTS|BASH_VERSINFO|EUID|PPID|SHELLOPTS|UID' > /container.env
 
 CRON_CMD="fdroid_update"
@@ -50,6 +51,3 @@ if [ "$RUN_ON_STARTUP" =  "yes" ]; then
 else
 	echo "[my.fdroid.repo] Do not run on startup"
 fi
-
-echo "[my.fdroid.repo]] Start cron"
-#/usr/sbin/crond -f -S -l 0 -c /etc/crontabs &
