@@ -28,26 +28,21 @@ RUN  apt update && \
 RUN add-apt-repository ppa:fdroid/fdroidserver && \
     apt update && \
     apt install -y fdroidserver  
+
+#workaround: fdroidserver/update.py log which file is processed to INFO
+ADD fdroidserver_update.patch /
+RUN patch -u -b $(dpkg -L fdroidserver | grep "fdroidserver/update.py")  -i fdroidserver_update.patch
+
+#workaround: fdroidserver/update.py dont synch archive back to repo
+ADD fdroidserver_update2.patch /
+RUN patch -u -b $(dpkg -L fdroidserver | grep "fdroidserver/update.py")  -i fdroidserver_update2.patch
+
 	
 #install apkeep
 ENV PATH ${PATH}:/root/.cargo/bin
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
 RUN cargo install --git https://github.com/EFForg/apkeep.git 
 
-#ENV PATH ${PATH}:/fdroidserver
-
-#install fdroidserver
-#RUN git clone --depth 1 https://gitlab.com/fdroid/fdroidserver.git \
-#     && export PATH="$PATH:$PWD/fdroidserver" \
-#     && pip3 install -e fdroidserver
-
-#workaround: fdroidserver/update.py log which file is processed to INFO
-ADD fdroidserver_update.patch /
-#RUN patch -u -b /fdroidserver/fdroidserver/update.py  -i fdroidserver_update.patch
-
-#workaround: fdroidserver/update.py dont synch archive back to repo
-ADD fdroidserver_update2.patch /
-#RUN patch -u -b /fdroidserver/fdroidserver/update.py  -i fdroidserver_update2.patch
 
 WORKDIR $FDROID_DIR
 ADD fdroid_update /usr/bin/fdroid_update
