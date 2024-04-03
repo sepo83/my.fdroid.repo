@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
+FROM ghcr.io/linuxserver/baseimage-debian:bookworm
 
 #ENV TZ="Europe/Berlin"
 #ENV LANG="de_DE.UTF-8"
@@ -18,7 +18,8 @@ RUN  apt update && \
 #    apt upgrade -y && \
     apt install -y \	
 	nano cron \
-	build-essential pkg-config libssl-dev \ 
+	cargo \
+	#build-essential pkg-config libssl-dev \ 
 #	fdroidserver \
 #	openjdk-17-jre aapt apksigner  \
 	python3-pip rsync git unzip software-properties-common && \
@@ -31,16 +32,17 @@ RUN add-apt-repository ppa:fdroid/fdroidserver && \
 
 #workaround: fdroidserver/update.py log which file is processed to INFO
 ADD fdroidserver_update.patch /
-RUN patch -u -b $(dpkg -L fdroidserver | grep "fdroidserver/update.py")  -i fdroidserver_update.patch
+RUN patch -u -b $(dpkg -L fdroidserver | grep "fdroidserver/update.py")  -i fdroidserver_update.patch && \
+	rm fdroidserver_update.patch
 
 #workaround: fdroidserver/update.py dont synch archive back to repo
 ADD fdroidserver_update2.patch /
-RUN patch -u -b $(dpkg -L fdroidserver | grep "fdroidserver/update.py")  -i fdroidserver_update2.patch
-
+RUN patch -u -b $(dpkg -L fdroidserver | grep "fdroidserver/update.py")  -i fdroidserver_update2.patch && \
+	rm fdroidserver_update2.patch
 	
 #install apkeep
-ENV PATH ${PATH}:/root/.cargo/bin
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
+#ENV PATH ${PATH}:/root/.cargo/bin
+#RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
 RUN cargo install --git https://github.com/EFForg/apkeep.git 
 
 
