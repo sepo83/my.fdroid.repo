@@ -41,7 +41,7 @@ RUN patch -u -b $(dpkg -L fdroidserver | grep "fdroidserver/update.py")  -i fdro
 	rm fdroidserver_update2.patch
 	
 #install apkeep
-#ENV PATH ${PATH}:/root/.cargo/bin
+ENV PATH ${PATH}:/root/.cargo/bin
 #RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
 RUN cargo install --git https://github.com/EFForg/apkeep.git 
 
