@@ -50,8 +50,7 @@ WORKDIR $FDROID_DIR
 ADD fdroid_update /usr/bin/fdroid_update
 ADD fdroid_remove_apk /usr/bin/
 ADD fdroid_purge_apk /usr/bin/
-ADD example_apk_list.txt /
-#add a script that configures and starts cronjob
-ADD 95_myfdroidserver /etc/cont-init.d/
+#copy local files
+COPY root/ /
 
 VOLUME /config
