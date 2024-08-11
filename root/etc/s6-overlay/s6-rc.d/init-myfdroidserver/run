@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv bash
+# shellcheck shell=bash
 
 #init $FDROID_DIR with an empty fdroid repo, if its empty
 if [ ! "$(ls -A $FDROID_DIR)" ]
