@@ -50,4 +50,7 @@ WORKDIR $FDROID_DIR
 #copy local files
 COPY root/ /
 
+#make init script executable
+RUN chmod +x /etc/s6-overlay/s6-rc.d/init-myfdroidserver/run
+
 VOLUME /config
