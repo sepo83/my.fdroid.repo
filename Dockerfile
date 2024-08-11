@@ -45,11 +45,8 @@ ENV PATH ${PATH}:/root/.cargo/bin
 #RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
 RUN cargo install --git https://github.com/EFForg/apkeep.git 
 
-
 WORKDIR $FDROID_DIR
-ADD fdroid_update /usr/bin/fdroid_update
-ADD fdroid_remove_apk /usr/bin/
-ADD fdroid_purge_apk /usr/bin/
+
 #copy local files
 COPY root/ /
 
