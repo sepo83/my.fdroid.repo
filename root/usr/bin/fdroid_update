@@ -4,7 +4,7 @@ echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 echo "~~ show configuratione"
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 echo "Store:    $APKEEP_STORE"
-echo "Username: $APKEEP_USERNAME"
+echo "Username: $GPLAY_MAIL"
 echo
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 echo "~~ APKEEP: Download and rename apks"
@@ -12,10 +12,10 @@ echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 mkdir $FDROID_DIR/.apk_tmp
 
 if [ "$APKEEP_STORE" = "google-play" ]; then
-  if [ -z $APKEEP_USERNAME ] || [ -z $APKEEP_PASSWORD ]; then
-    echo "ERROR: 'google-play' was selected as APKEEP_STORE, thus APKEEP_USERNAME (=$APKEEP_USERNAME) or APKEEP_PASSWORD (=$APKEEP_PASSWORD) shall not be empty! Aborting..."
+  if [ -z $GPLAY_MAIL ] || [ -z $GPLAY_TOKEN ]; then
+    echo "ERROR: 'google-play' was selected as APKEEP_STORE, thus GPLAY_MAIL (=$GPLAY_MAIL) or GPLAY_TOKEN (=$GPLAY_TOKEN) shall not be empty! Aborting..."
   fi
-  apkeep_storestr="-d $APKEEP_STORE -u '$APKEEP_USERNAME' -p $APKEEP_PASSWORD"
+  apkeep_storestr="-d $APKEEP_STORE -e $GPLAY_MAIL -t $GPLAY_TOKEN"
 
 else
   apkeep_storestr="-d $APKEEP_STORE"
